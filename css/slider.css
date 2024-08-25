@@ -58,24 +58,6 @@ html, body {
     margin: 0;
 }
 
-/* Video styling */
-.video-element {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-@media (max-width: 768px) {
-    .video-element {
-      height: 50% !important; /* Adjust the height as needed for smaller screens */
-    }
-}
-@media (max-width: 600px) {
-    .video-element {
-      height: 40% !important; /* Adjust the height as needed for smaller screens */
-    }
-}
-
 /* Image styling */
 .image-element {
     width: 100%;
