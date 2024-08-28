@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\JUSOR\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3B2F631E-51EA-4EC7-B6CA-CAE6FC63A08B}|JUSOR\\JUSOR.pyproj|D:\\JUSOR\\JUSOR\\app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{3B2F631E-51EA-4EC7-B6CA-CAE6FC63A08B}|JUSOR\\JUSOR.pyproj|solutionrelative:JUSOR\\app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B2F631E-51EA-4EC7-B6CA-CAE6FC63A08B}|JUSOR\\JUSOR.pyproj|D:\\JUSOR\\JUSOR\\JUSOR\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{3B2F631E-51EA-4EC7-B6CA-CAE6FC63A08B}|JUSOR\\JUSOR.pyproj|solutionrelative:JUSOR\\JUSOR\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "settings.py",
+              "DocumentMoniker": "D:\\JUSOR\\JUSOR\\JUSOR\\settings.py",
+              "RelativeDocumentMoniker": "JUSOR\\JUSOR\\settings.py",
+              "ToolTip": "D:\\JUSOR\\JUSOR\\JUSOR\\settings.py",
+              "RelativeToolTip": "JUSOR\\JUSOR\\settings.py",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAqwHEAAAA5AAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGSSURBVDhPpZO/agJBEId/uZgIWghiI4I2NhIUtLOwuJRHLhACtoKlnc/gI4jgI4hdJIQrAqmCvUWC2FqphSCi5o\u002BXmXFvT3IWgXzw4TI7M87t7eFfuK57ppaMQVrkFXlBHu8xLvlJvpFP5Dep4eJHkpP\u002BokOek5obMpCYzWbdWCwWiCvvSPlnhsfWJBIJ1Ot12LYt60KhgEgkonY1UuONYZLXvKhWq2g2m0in09jv9xxCPp9HuVyWZuPxWGLEK/kSOqz9A9vtdohGo7AsC6HQYZsOG\u002Bv1Gt1uF4PBQGIe3iNolsulJDYaDQyHQ2y3W8znc0wmE/T7fZXlE2hgGIYUTadTdDodzGYzmardbmO1Wqksn0CDcDiMZDKJXC6HTCYj57BYLLDZbPSZHOM14NeiqVQqUpxKpaSIJ\u002BJHKpVKKsPHa8A3THAcB61WS0aPx\u002BMy/mg0Qq1WQ6/XU1nCh/oVbPL3RXGLxaJrmmYgrrwnNXwf\u002BHqeSjzlMynv\u002BPiD4Sa3JN\u002BwSw6cgMd\u002BJx/ILw78E\u002BAHyDum0hZCUq4AAAAASUVORK5CYII=",
+              "WhenOpened": "2024-08-25T19:32:07.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "views.py",
+              "DocumentMoniker": "D:\\JUSOR\\JUSOR\\app\\views.py",
+              "RelativeDocumentMoniker": "JUSOR\\app\\views.py",
+              "ToolTip": "D:\\JUSOR\\JUSOR\\app\\views.py",
+              "RelativeToolTip": "JUSOR\\app\\views.py",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGSSURBVDhPpZO/agJBEId/uZgIWghiI4I2NhIUtLOwuJRHLhACtoKlnc/gI4jgI4hdJIQrAqmCvUWC2FqphSCi5o\u002BXmXFvT3IWgXzw4TI7M87t7eFfuK57ppaMQVrkFXlBHu8xLvlJvpFP5Dep4eJHkpP\u002BokOek5obMpCYzWbdWCwWiCvvSPlnhsfWJBIJ1Ot12LYt60KhgEgkonY1UuONYZLXvKhWq2g2m0in09jv9xxCPp9HuVyWZuPxWGLEK/kSOqz9A9vtdohGo7AsC6HQYZsOG\u002Bv1Gt1uF4PBQGIe3iNolsulJDYaDQyHQ2y3W8znc0wmE/T7fZXlE2hgGIYUTadTdDodzGYzmardbmO1Wqksn0CDcDiMZDKJXC6HTCYj57BYLLDZbPSZHOM14NeiqVQqUpxKpaSIJ\u002BJHKpVKKsPHa8A3THAcB61WS0aPx\u002BMy/mg0Qq1WQ6/XU1nCh/oVbPL3RXGLxaJrmmYgrrwnNXwf\u002BHqeSjzlMynv\u002BPiD4Sa3JN\u002BwSw6cgMd\u002BJx/ILw78E\u002BAHyDum0hZCUq4AAAAASUVORK5CYII=",
+              "WhenOpened": "2024-08-25T17:51:30.054Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
