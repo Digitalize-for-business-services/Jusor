@@ -1,0 +1,301 @@
+{% extends "app/base.html" %}
+
+{% block title %}Career Dashboard{% endblock %}
+
+{% block content %}
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+
+    <!-- Layout container -->
+    <div class="layout-page">
+      <!-- Content wrapper -->
+      <div class="content-wrapper">
+        <!-- Content -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row gy-4 justify-content-center">
+            <!-- Bordered Table -->
+            <div class="card w-100">
+              <h5 class="card-header text-center">Career Dashboard</h5>
+              <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="career-table table table-bordered table-hover w-100">
+                    <thead>
+                      <tr>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th>REASON</th>
+                        <th>CV</th>
+                        <th>STATUS</th>
+                        <th>CAREER</th>
+                        <th>ACTION</th>
+                      </tr>
+                    </thead>
+                    <tbody id="career-data">
+                      {% for application in job_applications %}
+                      <tr>
+                        <td>{{ application.name }}</td>
+                        <td>{{ application.email }}</td>
+                        <td>{{ application.phone }}</td>
+                        <td>
+                          <button class="btn btn-primary show-reason-button" data-reason="{{ application.message }}">Show Reason</button>
+                        </td>
+                        <td><a href="{{ application.cv.url }}" class="button-download">DOWNLOAD</a></td>
+                        <td><span class="status-label status-{{ application.status|lower }}">{{ application.status }}</span></td>
+                        <td>{{ application.career.title }}</td>
+                        <td>
+                          <a href="mailto:{{ application.email }}?subject=Job Application Accepted&body=Dear {{ application.name }},%0D%0A%0D%0AWe are pleased to inform you that your application for the {{ application.career.title }} position has been accepted.%0D%0A%0D%0ABest regards,%0D%0AYour Company" class="btn btn-success">Accept</a>
+                          <button class="action-button button-interview" data-id="{{ application.id }}" data-status="interview">Interview</button>
+                          <button class="action-button button-reject" data-id="{{ application.id }}" data-status="rejected">Reject</button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Borderless Table -->
+          </div>
+        </div>
+        <!-- / Content -->
+        <div class="content-backdrop fade"></div>
+      </div>
+      <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+  </div>
+  <!-- Overlay -->
+  <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+
+<!-- Reason Modal -->
+<div class="modal fade" id="reasonModal" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reasonModalLabel">Application Reason</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="reasonContent"></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.action-button').forEach(button => {
+        button.addEventListener('click', function(event) {
+            const applicationId = this.getAttribute('data-id');
+            const status = this.getAttribute('data-status');
+            fetch(`/update_application_status/${applicationId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error updating status');
+                }
+            });
+        });
+    });
+
+    document.querySelectorAll('.show-reason-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const reason = this.getAttribute('data-reason');
+            document.getElementById('reasonContent').textContent = reason;
+            $('#reasonModal').modal('show');
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.layout-wrapper, .layout-container, .layout-page, .content-wrapper, .container-xxl, .card, .table-responsive, .career-table {
+    height: 100%;
+}
+
+.container-xxl {
+    padding: 0;
+}
+
+.card {
+    border: none;
+    box-shadow: none;
+}
+
+.card-header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.career-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.career-table th, .career-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.career-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.career-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.career-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.status-label {
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background-color: #f39c12;
+}
+
+.status-accepted {
+    background-color: #27ae60;
+}
+
+.status-interview {
+    background-color: #2980b9;
+}
+
+.status-rejected {
+    background-color: #c0392b;
+}
+.button-interview {
+    background-color: #2980b9 !important; /* Blue */
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-interview:hover {
+    background-color: #2471a3;
+}
+
+.button-reject {
+    background-color: #c0392b !important; /* Red */
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-reject:hover {
+    background-color: #a93226;
+}
+.button-download {
+    background-color: #8e44ad;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+}
+
+.button-download:hover {
+    background-color: #7d3c98;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    right: 0;
+    top: 25px;
+    width: 120px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .career-table, .career-table thead, .career-table tbody, .career-table th, .career-table td, .career-table tr {
+        display: block;
+        width: 100%;
+    }
+    .career-table tr {
+        margin-bottom: 15px;
+    }
+    .career-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .career-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        text-align: left;
+        font-weight: bold;
+    }
+}
+</style>
+{% endblock %}

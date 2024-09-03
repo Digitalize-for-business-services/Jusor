@@ -1,185 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Jusor - Professional Translation Services | Translation Company</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <meta name="csrf-token" content="{{ csrf_token }}">
+{% extends "app/base.html" %}
+{% load static i18n %}
 
-  <!-- Favicons -->
-  <link href="{% static 'img/Favicon.png' %}" rel="icon">
+{% block title %}Jusor - Professional Translation Services | Translation Company{% endblock %}
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700" rel="stylesheet">
-
-  <!-- Bootstrap CSS File -->
-  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-  <!-- Libraries CSS Files -->
-  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
-
-  <!-- Main Stylesheet File -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/slider.css' %}">
-
-</head>
-
-<body id="body">
-
-  <!-- Whatsapp -->
-  <a href="https://api.whatsapp.com/send?phone=971503244329&text=Hello Jusor, I would like to inquire about your services." class="whatsapp_float" target="_blank">
-    <img src="https://img.icons8.com/color/48/000000/whatsapp.png" alt="WhatsApp">
-    <span>Contact Us</span>
-  </a>
-
-  <!-- Alert -->
-  <div id="whatsapp-alert-form" class="alert">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    <p>Leave your phone number, and we'll contact you on WhatsApp!</p>
-    <form id="contact-form">
-        <input type="text" id="phone" name="phone" placeholder="Your Phone Number" required>
-        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Submit</button>
-    </form>
-  </div>
-
-  <!--==========================
-    Top Bar
-  ============================-->
-  <section id="topbar" class="d-none d-lg-block">
-    <div class="container clearfix d-flex justify-content-between align-items-center">
-      <div class="contact-info float-left d-flex justify-content-between align-items-center">
-        <i class="fa fa-envelope-o"></i> <a href="mailto:info@jusortrans.com">info@jusortrans.com</a>
-        <i class="fa fa-phone"></i> <a href="tel:+971503244329">+971 50 324 4329</a>
-        <i class="fa-solid fa-map-location-dot"></i> <a href="https://maps.app.goo.gl/WgstTXviLdm6XtQC7" target="_blank">Jusor Alkalimat Certified and Legal Translation Office</a>
-      </div>
-      <div class="social-links float-right">
-        {% for social_icon in social_media_icons %}
-        <a href="{{ social_icon.link }}" target="_blank">
-          <i class="{{ social_icon.icon.icon_class }}"></i>
-        </a>
-        {% if request.user.is_superuser %}
-          <i class="fa fa-edit edit-social-icon" data-id="{{ social_icon.id }}" data-name="{{ social_icon.name }}" data-link="{{ social_icon.link }}" data-icon-class="{{ social_icon.icon.icon_class }}" data-toggle="modal" data-target="#editSocialIconModal"></i>
-          <i class="fa fa-trash delete-social-icon" data-id="{{ social_icon.id }}"></i>
-        {% endif %}
-        {% endfor %}
-        {% if request.user.is_superuser %}
-          <button class="btn btn-primary" data-toggle="modal" data-target="#addSocialIconModal">Add Social Mdia</button>
-        {% endif %}
-      </div>
-    </div>
-  </section>
-
-    <!--==========================
-      Header
-    ============================-->
-    <header class="d-flex" id="header">
-      <div class="container d-flex justify-content-between align-items-center">
-        <div id="logo" class="pull-left">
-          <a href="#body">
-            {% if logo %}
-              {% if logo.image %}
-                <img src="{{ logo.image.url }}" alt="{{ logo.name }}" title="{{ logo.name }}" />
-              {% elif logo.icon_class %}
-                <i class="{{ logo.icon_class }}" title="{{ logo.name }}"></i>
-              {% else %}
-                <img src="default-logo.png" alt="Default Logo" title="Default Logo" />
-              {% endif %}
-            {% else %}
-              <img src="default-logo.png" alt="Default Logo" title="Default Logo" />
-            {% endif %}
-          </a>
-        </div>
-        <nav id="nav-menu-container">
-          <ul class="nav-menu">
-            {% for header in headers %}
-              <li>
-                <a href="{{ header.get_link }}">{{ header.name }}</a>
-                <i class="fa-solid fa-pen-to-square edit-icon" data-toggle="modal" data-target="#editMenuItemModal" data-id="{{ header.id }}" data-name="{{ header.name }}" data-link="{{ header.get_link }}"></i>
-                <i class="fa-solid fa-trash delete-icon" data-id="{{ header.id }}"></i>
-              </li>
-            {% endfor %}
-            <li>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMenuItemModal">Add Menu Item</button>
-            </li>
-            <li>
-              <div class="switch mx-3">
-                <label class="switch__wrapper">
-                  <input type="checkbox" />
-                  <span class="switch__slider"></span>
-                  <div></div>
-                </label>
-              </div>
-            </li>
-          </ul>
-        </nav><!-- #nav-menu-container -->        
-      </div>
-    </header><!-- #header -->
-
-    <!-- Add Menu Item Modal -->
-    <div class="modal fade" id="addMenuItemModal" tabindex="-1" role="dialog" aria-labelledby="addMenuItemModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addMenuItemModalLabel">Add Menu Item</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addMenuItemForm">
-              <div class="form-group">
-                <label for="menuItemName">Name</label>
-                <input type="text" class="form-control" id="menuItemName" required>
-              </div>
-              <div class="form-group">
-                <label for="menuItemLink">Link</label>
-                <input type="text" class="form-control" id="menuItemLink" required>
-              </div>
-              
-              <button type="submit" class="btn btn-primary">Add</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Menu Item Modal -->
-    <div class="modal fade" id="editMenuItemModal" tabindex="-1" role="dialog" aria-labelledby="editMenuItemModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editMenuItemModalLabel">Edit Menu Item</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="editMenuItemForm">
-              <input type="hidden" id="editMenuItemId">
-              <div class="form-group">
-                <label for="editMenuItemName">Name</label>
-                <input type="text" class="form-control" id="editMenuItemName" required>
-              </div>
-              <div class="form-group">
-                <label for="editMenuItemLink">Link</label>
-                <input type="text" class="form-control" id="editMenuItemLink" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
+{% block content %}
     <!--==========================
       Intro Section
     ============================-->
@@ -217,15 +41,10 @@
         <li></li>
         <li></li>
       </ul>
-      {% if request.user.is_superuser %}
-        <button class="btn btn-primary" style="z-index: 1000; position: relative;" data-toggle="modal" data-target="#addSliderModal">Add Slide</button>
-      {% endif %}
     </div>
     <!-- End Slider -->
-    <!-- #intro -->
 
     <main id="main">
-
       <!--==========================
         About Section
       ============================-->
@@ -256,8 +75,8 @@
       <section id="services">
         <div class="container">
           <div class="section-header">
-            <h2>Our Professional Translation Services</h2>
-            <p>At Jusor, we provide a comprehensive range of professional translation services designed to meet the needs of businesses across various industries. Our expertise ensures that your content is accurate, engaging, and tailored to your audience.</p>
+            <h2>{% trans "Our Professional Translation Services" %}</h2>
+            <p>{% trans "At Jusor, we provide a comprehensive range of professional translation services designed to meet the needs of businesses across various industries. Our expertise ensures that your content is accurate, engaging, and tailored to your audience." %}</p>
           </div>
       
           <div class="row">
@@ -280,7 +99,7 @@
       <section id="clients" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>Our Valued Clients</h2>
+            <h2>{% trans "Our Valued Clients" %}</h2>
             <p>{{ client.description }}</p>
           </div>
       
@@ -327,8 +146,8 @@
       <section id="blog" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>Our Blog</h2>
-            <p>Stay informed with the latest updates, insights, and trends in the translation industry with Jusor's expert blog.</p>
+            <h2>{% trans "Our Blog" %}</h2>
+            <p>{% trans "Stay informed with the latest updates, insights, and trends in the translation industry with Jusor's expert blog." %}  </p>
           </div>
           <div class="row">
             {% for article in articles %}
@@ -351,56 +170,20 @@
       <section id="testimonials" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>Client Testimonials</h2>
-            <p>Discover what our clients say about their experiences with Jusor's professional translation services. We take pride in delivering accurate, reliable, and timely translations to meet all your needs.</p>
+            <h2>{% trans "Client Testimonials" %}</h2>
+            <p>{% trans "Discover what our clients say about their experiences with Jusor's professional translation services. We take pride in delivering accurate, reliable, and timely translations to meet all your needs." %}</p>
           </div>
           <div class="owl-carousel testimonials-carousel">
-
+            {% for testimonial in testimonials %}
             <div class="testimonial-item">
               <p>
                 <img src="{% static 'img/quote-sign-left.png' %}" class="quote-sign-left" alt="Left quote sign">
-                One of the best services! My gratitude is extended to Mr. Mostafa Aly for supporting me with the legal translation and being responsive throughout. Many thanks.
+                {{ testimonial.description }}
                 <img src="{% static 'img/quote-sign-right.png' %}" class="quote-sign-right" alt="Right quote sign">
               </p>
-              <h3>Mohamed Amine Ennaboulsi</h3>
+              <h3>{{ testimonial.name }}</h3>
             </div>
-
-            <div class="testimonial-item">
-              <p>
-                <img src="{% static 'img/quote-sign-left.png' %}" class="quote-sign-left" alt="Left quote sign">
-                If you're in search of a reliable legal translation service, look no further. This platform impressed me with its commitment to precision and clarity. The translations were not only accurate but also maintained the legal nuances essential for documents in this field. The user-friendly interface and prompt delivery make it a top choice for anyone in need of impeccable legal translations.
-                <img src="{% static 'img/quote-sign-right.png' %}" class="quote-sign-right" alt="Right quote sign">
-              </p>
-              <h3>Mohammed Abazer</h3>
-            </div>
-
-            <div class="testimonial-item">
-              <p>
-                <img src="{% static 'img/quote-sign-left.png' %}" class="quote-sign-left" alt="Left quote sign">
-                I want to express my utmost gratitude for the amazing job done by Mostafa. He was very helpful during my inquiry, and even managed to get my legal translation done less than a day. Such professionalism should definitely be appreciated. Also, the prices were extremely affordable too, I'm really happy with it. Would highly recommend their services to anyone who needs legal translations.
-                <img src="{% static 'img/quote-sign-right.png' %}" class="quote-sign-right" alt="Right quote sign">
-              </p>
-              <h3>Kaye Barzaga</h3>
-            </div>
-
-            <div class="testimonial-item">
-              <p>
-                <img src="{% static 'img/quote-sign-left.png' %}" class="quote-sign-left" alt="Left quote sign">
-                I've used Jusor Translation Company for diplomatic translations, and their translations have been pivotal for our international diplomacy efforts. Exceptional service!
-                <img src="{% static 'img/quote-sign-right.png' %}" class="quote-sign-right" alt="Right quote sign">
-              </p>
-              <h3>HODA ABDELWAHED</h3>
-            </div>
-
-            <div class="testimonial-item">
-              <p>
-                <img src="{% static 'img/quote-sign-left.png' %}" class="quote-sign-left" alt="Left quote sign">
-                I've used Jusor Translation Company for years, and they've consistently delivered top-quality translations. Highly recommended!
-                <img src="{% static 'img/quote-sign-right.png' %}" class="quote-sign-right" alt="Right quote sign">
-              </p>
-              <h3>ibrahim yousef</h3>
-            </div>
-
+            {% endfor %}
           </div>
         </div>
       </section><!-- #testimonials -->
@@ -412,8 +195,8 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-9 text-center text-lg-left">
-              <h3 class="cta-title">Expand Your Global Reach with Professional Translation Services</h3>
-              <p class="cta-text">At Jusor, we bridge language gaps with expert translations that ensure your message resonates with international audiences. Our culturally accurate and precise translations help your business connect with clients worldwide. Ready to take your business to the next level?</p>
+              <h3 class="cta-title">{% trans "Expand Your Global Reach with Professional Translation Services" %}</h3>
+              <p class="cta-text">{% trans "At Jusor, we bridge language gaps with expert translations that ensure your message resonates with international audiences. Our culturally accurate and precise translations help your business connect with clients worldwide. Ready to take your business to the next level?" %}</p>
             </div>
             <div class="col-lg-3 cta-btn-container text-center">
               <a class="cta-btn align-middle" href="#contact" aria-label="Contact Us to Get Started with Translation Services">Get Started</a>
@@ -428,73 +211,28 @@
       <section id="team" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>Meet Our Expert Translation Team</h2>
-            <p>At Jusor, our team of skilled professionals is committed to providing top-quality translation services tailored to meet your business needs. Our experts ensure accurate and culturally relevant translations for a global audience.</p>
+            <h2>{% trans " Meet Our Expert Translation Team" %}</h2>
+            <p>{% trans "At Jusor, our team of skilled professionals is committed to providing top-quality translation services tailored to meet your business needs. Our experts ensure accurate and culturally relevant translations for a global audience." %}</p>
           </div>
           <div class="row">
+            {% for member in team_members %}
             <div class="col-lg-3 col-md-6">
               <div class="member">
-                <div class="pic">
-                  <img src="{% static 'img/team-1.png' %}" alt="Walter White - Chief Executive Officer (CEO) at Jusor">
-                </div>
+                {% if member.image %}
+              <img src="{{ member.image.url }}" alt="{{ member.name }}" class="img-fluid">
+            {% endif %}
                 <div class="details">
-                  <h4>Walter White</h4>
-                  <span>Chief Executive Officer (CEO)</span>
+                  <h4>{{ member.name }}</h4>
+                  <span>{{ member.job_title }}</span>
                   <div class="social">
-                    <a href="#" aria-label="LinkedIn Profile of Walter White"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" aria-label="Facebook Profile of Walter White"><i class="fa-brands fa-facebook"></i></a>
+                    {% for icon in member.icons.all %}
+                                <a href="{{ icon.get_link }}" target="_blank">{{ icon.display_icon|safe }}</a>
+                    {% endfor %}
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="col-lg-3 col-md-6">
-              <div class="member">
-                <div class="pic">
-                  <img src="{% static 'img/team-2.png' %}" alt="Sarah Jhinson - Product Manager at Jusor">
-                </div>
-                <div class="details">
-                  <h4>Sarah Jhinson</h4>
-                  <span>Product Manager</span>
-                  <div class="social">
-                    <a href="#" aria-label="LinkedIn Profile of Sarah Jhinson"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" aria-label="Facebook Profile of Sarah Jhinson"><i class="fa-brands fa-facebook"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-              <div class="member">
-                <div class="pic">
-                  <img src="{% static 'img/team-3.png' %}" alt="William Anderson - Chief Technology Officer (CTO) at Jusor">
-                </div>
-                <div class="details">
-                  <h4>William Anderson</h4>
-                  <span>Chief Technology Officer (CTO)</span>
-                  <div class="social">
-                    <a href="#" aria-label="LinkedIn Profile of William Anderson"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" aria-label="Facebook Profile of William Anderson"><i class="fa-brands fa-facebook"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-              <div class="member">
-                <div class="pic">
-                  <img src="{% static 'img/team-4.png' %}" alt="Amanda Jepson - Accountant at Jusor">
-                </div>
-                <div class="details">
-                  <h4>Amanda Jepson</h4>
-                  <span>Accountant</span>
-                  <div class="social">
-                    <a href="#" aria-label="LinkedIn Profile of Amanda Jepson"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" aria-label="Facebook Profile of Amanda Jepson"><i class="fa-brands fa-facebook"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </section><!-- #team -->
@@ -504,68 +242,63 @@
       ============================-->
       <section id="career" class="wow fadeInUp">
         <div class="container">
-          <div class="section-header">
-            <h2>Career Opportunities at Jusor</h2>
-            <p>Join our expert team and help us create a world where communication knows no boundaries. Explore our current job openings and start your journey with Jusor.</p>
-          </div>
-          <div class="row">
-      
-            <div class="col-lg-6 mb-4">
-              <div class="career-item">
-                <h4><a href="{% url 'senior-translation-specialist' %}">Senior Translation Specialist</a></h4>
-                <p>We are looking for a highly skilled and experienced translation specialist to join our team. Requirements include a strong command of multiple languages, experience in legal and business translation, and attention to detail. Ready to take on this role? Apply below!</p>
-                <a href="{% url 'senior-translation-specialist' %}" class="btn btn-primary">View Details</a>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal">Apply Now</button>
-              </div>
+            <div class="section-header">
+                <h2>{% trans "Career Opportunities at Jusor" %}</h2>
+                <p>{% trans "Join our expert team and help us create a world where communication knows no boundaries. Explore our current job openings and start your journey with Jusor." %}</p>
             </div>
-      
-            <div class="col-lg-6 mb-4">
-              <div class="career-item">
-                <h4><a href="client-relationship-manager.html">Client Relationship Manager</a></h4>
-                <p>We are seeking a proactive and client-focused individual to manage our client relationships. Ideal candidates will have experience in sales or account management in the translation industry. Ready to join our dynamic team? Apply below!</p>
-                <a href="client-relationship-manager.html" class="btn btn-primary">View Details</a>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal">Apply Now</button>
-              </div>
+            <div class="row">
+                {% for career in careers %}
+                <div class="col-lg-6 mb-4">
+                    <div class="career-item">
+                        <h4><a href="{% url 'career_details' career.id %}">{{ career.title }}</a></h4>
+                        <p>{{ career.description }}</p>
+                        <a href="{% url 'career_details' career.id %}" class="btn btn-primary">View Details</a>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal" data-career-id="{{ career.id }}">Apply Now</button>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-      
-          </div>
         </div>
-      </section>
+    </section>
       
       <!-- Apply Modal -->
       <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="applyModalLabel">Apply for a Position at Jusor</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="applyModalLabel">{% trans "Apply for a Position at Jusor" %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="hiringForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="applicantName">{% trans "Your Name" %}</label>
+                            <input type="text" class="form-control" id="applicantName" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="applicantEmail">{% trans "Your Email" %}</label>
+                            <input type="email" class="form-control" id="applicantEmail" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="applicantPhone">{% trans "Your Phone" %}</label>
+                            <input type="text" class="form-control" id="applicantPhone" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="applicantMessage">{% trans "Why are you a good fit for this position?" %}</label>
+                            <textarea class="form-control" id="applicantMessage" name="message" rows="3" placeholder="Briefly describe your qualifications" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="applicantCV">{% trans "Upload Your CV" %}</label>
+                            <input type="file" class="form-control" id="applicantCV" name="cv" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{% trans "Submit Application" %}</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-              <form id="hiringForm">
-                <div class="form-group">
-                  <label for="applicantName">Your Name</label>
-                  <input type="text" class="form-control" id="applicantName" placeholder="Enter your name" required>
-                </div>
-                <div class="form-group">
-                  <label for="applicantEmail">Your Email</label>
-                  <input type="email" class="form-control" id="applicantEmail" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                  <label for="applicantPhone">Your Phone</label>
-                  <input type="text" class="form-control" id="applicantPhone" placeholder="Enter your phone number" required>
-                </div>
-                <div class="form-group">
-                  <label for="applicantMessage">Why are you a good fit for this position?</label>
-                  <textarea class="form-control" id="applicantMessage" rows="3" placeholder="Briefly describe your qualifications" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Application</button>
-              </form>
-            </div>
-          </div>
         </div>
-      </div><!-- #career -->
+    </div><!-- #career -->
 
       <!--==========================
         Contact Section
@@ -573,8 +306,8 @@
       <section id="contact" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>Contact Jusor - Your Professional Translation Partner</h2>
-            <p>Have questions or need expert translation services? Get in touch with Jusor today. Our team is ready to help you connect with the world through precise, reliable, and certified translation solutions. Let's bridge the language gap together!</p>
+            <h2>{% trans "Contact Jusor - Your Professional Translation Partner" %}</h2>
+            <p>{% trans "Have questions or need expert translation services? Get in touch with Jusor today. Our team is ready to help you connect with the world through precise, reliable, and certified translation solutions. Let's bridge the language gap together!" %}</p>
           </div>
 
           <div class="row contact-info">
@@ -582,15 +315,15 @@
             <div class="col-md-4">
               <div class="contact-address">
                 <i class="ion-ios-location-outline"></i>
-                <h3>Our Office Location</h3>
-                <address>Dar Al Wuheida Building - Office No. 319 - Abu Hail - Dubai - United Arab Emirates</address>
+                <h3>{% trans "Our Office Location" %}</h3>
+                <address>{% trans "Dar Al Wuheida Building - Office No. 319 - Abu Hail - Dubai - United Arab Emirates" %}</address>
               </div>
             </div>
 
             <div class="col-md-4">
               <div class="contact-phone">
                 <i class="ion-ios-telephone-outline"></i>
-                <h3>Call Us</h3>
+                <h3>{% trans "Call Us" %}</h3>
                 <p><a href="tel:+971503244329">+971 50 324 4329</a></p>
               </div>
             </div>
@@ -598,7 +331,7 @@
             <div class="col-md-4">
               <div class="contact-email">
                 <i class="ion-ios-email-outline"></i>
-                <h3>Email Us</h3>
+                <h3>{% trans "Email Us" %}</h3>
                 <p><a href="mailto:info@jusortrans.com">info@jusortrans.com</a></p>
               </div>
             </div>
@@ -612,9 +345,10 @@
 
         <div class="container">
           <div class="form">
-            <div id="sendmessage">Your message has been sent. Thank you!</div>
+            <div id="sendmessage">{% trans "Your message has been sent. Thank you!" %}</div>
             <div id="errormessage"></div>
-            <form action="" method="post" role="form" class="contactForm">
+            <form action="{% url 'contact' %}" method="post" role="form" class="contactForm">
+              {% csrf_token %}
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 characters" required />
@@ -633,449 +367,294 @@
                 <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write your message" placeholder="Message" required></textarea>
                 <div class="validation"></div>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <div class="text-center"><button type="submit">{% trans "Send Message" %}</button></div>
             </form>
           </div>
         </div>
       </section><!-- #contact -->
 
-  </main>
+    </main>
 
-    <!--==========================
-      Footer
-    ============================-->
-    <footer id="footer">
-      <div class="container">
-        <div class="footer-content text-center">
-          <p>&copy; <strong>Jusor - Professional Translation Services</strong>. All Rights Reserved.</p>
-          <p>Your trusted partner in delivering accurate and culturally relevant translations worldwide.</p>
-        </div>
-      </div>
-    </footer><!-- #footer -->
+{% endblock %}
 
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-    <div class="modal fade" id="addSocialIconModal" tabindex="-1" role="dialog" aria-labelledby="addSocialIconModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addSocialIconModalLabel">Add Social Media Icon</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addSocialIconForm">
-              <div class="form-group">
-                <label for="socialIconName">Name</label>
-                <input type="text" class="form-control" id="socialIconName" required>
-              </div>
-              <div class="form-group">
-                <label for="socialIconLink">Link</label>
-                <input type="text" class="form-control" id="socialIconLink" required>
-              </div>
-              <div class="form-group">
-                <label for="socialIconClass">Icon Class (e.g., fa-brands fa-facebook)</label>
-                <input type="text" class="form-control" id="socialIconClass" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Add</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="editSocialIconModal" tabindex="-1" role="dialog" aria-labelledby="editSocialIconModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editSocialIconModalLabel">Edit Social Media Icon</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="editSocialIconForm">
-              <input type="hidden" id="editSocialIconId">
-              <div class="form-group">
-                <label for="editSocialIconName">Name</label>
-                <input type="text" class="form-control" id="editSocialIconName" required>
-              </div>
-              <div class="form-group">
-                <label for="editSocialIconLink">Link</label>
-                <input type="text" class="form-control" id="editSocialIconLink" required>
-              </div>
-              <div class="form-group">
-                <label for="editSocialIconClass">Icon Class (e.g., fa-brands fa-facebook)</label>
-                <input type="text" class="form-control" id="editSocialIconClass" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="addSliderModal" tabindex="-1" role="dialog" aria-labelledby="addSliderModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addSliderModalLabel">Add Slide</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addSliderForm" action="{% url 'add_slider' %}" method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="sliderTitle">Title</label>
-                <input type="text" class="form-control" id="sliderTitle" name="title" required>
-              </div>
-              <div class="form-group">
-                <label for="sliderDescription">Description</label>
-                <textarea class="form-control" id="sliderDescription" name="description" required></textarea>
-              </div>
-              <div class="form-group">
-                <label for="sliderImage">Image</label>
-                <input type="file" class="form-control" id="sliderImage" name="image" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Add</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Edit Slider Modal -->
-    <div class="modal fade" id="editSliderModal" tabindex="-1" role="dialog" aria-labelledby="editSliderModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editSliderModalLabel">Edit Slide</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="editSliderForm">
-              <input type="hidden" id="editSliderId">
-              <div class="form-group">
-                <label for="editSliderTitle">Title</label>
-                <input type="text" class="form-control" id="editSliderTitle" required>
-              </div>
-              <div class="form-group">
-                <label for="editSliderDescription">Description</label>
-                <textarea class="form-control" id="editSliderDescription" required></textarea>
-              </div>
-              <div class="form-group">
-                <label for="editSliderImage">Image</label>
-                <input type="file" class="form-control" id="editSliderImage">
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  <!-- JavaScript Libraries -->
-  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'lib/jquery/jquery-migrate.min.js' %}"></script>
-  <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-  <script src="{% static 'lib/superfish/hoverIntent.js' %}"></script>
-  <script src="{% static 'lib/superfish/superfish.min.js' %}"></script>
-  <script src="{% static 'lib/wow/wow.min.js' %}"></script>
-  <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'lib/magnific-popup/magnific-popup.min.js' %}"></script>
-  <script src="{% static 'lib/sticky/sticky.js' %}"></script>
-
-  <!-- Contact Form JavaScript File -->
-  <script src="{% static 'contactform/contactform.js' %}"></script>
-
-  <!-- Template Main Javascript File -->
-  <script src="{% static 'js/main.js' %}"></script>
-
-  <!-- GSAP and Scroll Trigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script>
-
-      // Hide spinner after 3 seconds
-      window.addEventListener('load', function() {
-          setTimeout(function() {
-              document.getElementById('spinner-container').classList.add('hidden');
-          }, 3000);
-      });
-
-      // Function to check if element is in viewport
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-
-    // Function to add animation when elements enter the viewport
-    function animateBlogItems() {
-        const blogItems = document.querySelectorAll('.blog-item');
-        blogItems.forEach(item => {
-            if (isInViewport(item)) {
-                item.style.opacity = 1;
-                item.style.transform = 'translateY(0)';
-            }
+{% block extra_js %}
+    <script>
+        // Hide spinner after 3 seconds
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('spinner-container').classList.add('hidden');
+            }, 3000);
         });
-    }
 
-    // Add event listeners
-    window.addEventListener('load', animateBlogItems);
-    window.addEventListener('scroll', animateBlogItems);
-
-  </script>
-  <script>
-    document.getElementById('addMenuItemForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const name = document.getElementById('menuItemName').value;
-  const link = document.getElementById('menuItemLink').value;
-
-  
-  addMenuItem(name, link);
-});
-
-function addMenuItem(name, link) {
-  fetch("{% url 'add_menu_item' %}", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: JSON.stringify({ name, link})
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      const newItem = document.createElement('li');
-      newItem.innerHTML = `<a href="${data.link}">${data.name}</a>`;
-      document.querySelector('.nav-menu').appendChild(newItem);
-      $('#addMenuItemModal').modal('hide');
-    } else {
-      alert('Error adding menu item');
-    }
-  });
-}
-document.getElementById('addSocialIconForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const name = document.getElementById('socialIconName').value;
-  const link = document.getElementById('socialIconLink').value;
-  const iconClass = document.getElementById('socialIconClass').value;
-
-  fetch("{% url 'add_social_icon' %}", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: JSON.stringify({ name, link, icon_class: iconClass })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      location.reload();
-    } else {
-      alert('Error adding social icon');
-    }
-  });
-});
-
-document.querySelectorAll('.edit-slider-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-    const title = this.getAttribute('data-title');
-    const description = this.getAttribute('data-description');
-    document.getElementById('editSliderId').value = id;
-    document.getElementById('editSliderTitle').value = title;
-    document.getElementById('editSliderDescription').value = description;
-  });
-});
-
-document.getElementById('editSliderForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const id = document.getElementById('editSliderId').value;
-  const title = document.getElementById('editSliderTitle').value;
-  const description = document.getElementById('editSliderDescription').value;
-  const image = document.getElementById('editSliderImage').files[0];
-
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
-  if (image) {
-    formData.append('image', image);
-  }
-
-  fetch(`/edit_slider/${id}/`, {
-    method: 'POST',
-    headers: {
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      location.reload();
-    } else {
-      alert('Error editing slide');
-    }
-  });
-});
-
-document.querySelectorAll('.delete-slider-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-
-    if (confirm('Are you sure you want to delete this slide?')) {
-      fetch(`/delete_slider/${id}/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
+        // Function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
         }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          location.reload();
-        } else {
-          alert('Error deleting slide');
+
+        // Function to add animation when elements enter the viewport
+        function animateBlogItems() {
+            const blogItems = document.querySelectorAll('.blog-item');
+            blogItems.forEach(item => {
+                if (isInViewport(item)) {
+                    item.style.opacity = 1;
+                    item.style.transform = 'translateY(0)';
+                }
+            });
         }
-      });
-    }
-  });
-});
 
-// Handle editing a social icon
-document.querySelectorAll('.edit-social-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-    const name = this.getAttribute('data-name');
-    const link = this.getAttribute('data-link');
-    const iconClass = this.getAttribute('data-icon-class');
-    document.getElementById('editSocialIconId').value = id;
-    document.getElementById('editSocialIconName').value = name;
-    document.getElementById('editSocialIconLink').value = link;
-    document.getElementById('editSocialIconClass').value = iconClass;
-  });
-});
+        // Add event listeners
+        window.addEventListener('load', animateBlogItems);
+        window.addEventListener('scroll', animateBlogItems);
 
-document.getElementById('editSocialIconForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const id = document.getElementById('editSocialIconId').value;
-  const name = document.getElementById('editSocialIconName').value;
-  const link = document.getElementById('editSocialIconLink').value;
-  const iconClass = document.getElementById('editSocialIconClass').value;
+        document.getElementById('addMenuItemForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('menuItemName').value;
+            const link = document.getElementById('menuItemLink').value;
 
-  fetch(`/edit_social_icon/${id}/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: JSON.stringify({ name, link, icon_class: iconClass })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      location.reload();
-    } else {
-      alert('Error editing social icon');
-    }
-  });
-});
+            addMenuItem(name, link);
+        });
 
-// Handle deleting a social icon
-document.querySelectorAll('.delete-social-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-
-    if (confirm('Are you sure you want to delete this social icon?')) {
-      fetch(`/delete_social_icon/${id}/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
+        function addMenuItem(name, link) {
+            fetch("{% url 'add_menu_item' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ name, link})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const newItem = document.createElement('li');
+                    newItem.innerHTML = `<a href="${data.link}">${data.name}</a>`;
+                    document.querySelector('.nav-menu').appendChild(newItem);
+                    $('#addMenuItemModal').modal('hide');
+                } else {
+                    alert('Error adding menu item');
+                }
+            });
         }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          location.reload();
-        } else {
-          alert('Error deleting social icon');
-        }
-      });
-    }
-  });
-});
-document.querySelectorAll('.edit-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-    const name = this.getAttribute('data-name');
-    const link = this.getAttribute('data-link');
-    document.getElementById('editMenuItemId').value = id;
-    document.getElementById('editMenuItemName').value = name;
-    document.getElementById('editMenuItemLink').value = link;
-  });
-});
-function deleteMenuItem(id) {
-  fetch(`/delete_menu_item/${id}/`, {
-    method: 'POST',
-    headers: {
-      'X-CSRFToken': '{{ csrf_token }}'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      location.reload();
-    } else {
-      alert('Error deleting menu item');
-    }
-  });
-}
-document.querySelectorAll('.delete-icon').forEach(icon => {
-  icon.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-    if (confirm('Are you sure you want to delete this menu item?')) {
-      deleteMenuItem(id);
-    }
-  });
-});
-document.getElementById('editMenuItemForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const id = document.getElementById('editMenuItemId').value;
-  const name = document.getElementById('editMenuItemName').value;
-  const link = document.getElementById('editMenuItemLink').value;
 
-  fetch(`/edit_menu_item/${id}/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: JSON.stringify({ name, link })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      location.reload();
-    } else {
-      alert('Error editing menu item');
-    }
-  });
-});
+        document.getElementById('addSocialIconForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('socialIconName').value;
+            const link = document.getElementById('socialIconLink').value;
+            const iconClass = document.getElementById('socialIconClass').value;
+
+            fetch("{% url 'add_social_icon' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ name, link, icon_class: iconClass })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error adding social icon');
+                }
+            });
+        });
+
+        document.querySelectorAll('.edit-slider-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+                const description = this.getAttribute('data-description');
+                document.getElementById('editSliderId').value = id;
+                document.getElementById('editSliderTitle').value = title;
+                document.getElementById('editSliderDescription').value = description;
+            });
+        });
+
+        document.getElementById('editSliderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const id = document.getElementById('editSliderId').value;
+            const title = document.getElementById('editSliderTitle').value;
+            const description = document.getElementById('editSliderDescription').value;
+            const image = document.getElementById('editSliderImage').files[0];
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            if (image) {
+                formData.append('image', image);
+            }
+
+            fetch(`/edit_slider/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error editing slide');
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-slider-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+
+                if (confirm('Are you sure you want to delete this slide?')) {
+                    fetch(`/delete_slider/${id}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error deleting slide');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Handle editing a social icon
+        document.querySelectorAll('.edit-social-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const link = this.getAttribute('data-link');
+                const iconClass = this.getAttribute('data-icon-class');
+                document.getElementById('editSocialIconId').value = id;
+                document.getElementById('editSocialIconName').value = name;
+                document.getElementById('editSocialIconLink').value = link;
+                document.getElementById('editSocialIconClass').value = iconClass;
+            });
+        });
+
+        document.getElementById('editSocialIconForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const id = document.getElementById('editSocialIconId').value;
+            const name = document.getElementById('editSocialIconName').value;
+            const link = document.getElementById('editSocialIconLink').value;
+            const iconClass = document.getElementById('editSocialIconClass').value;
+
+            fetch(`/edit_social_icon/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ name, link, icon_class: iconClass })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error editing social icon');
+                }
+            });
+        });
+
+        // Handle deleting a social icon
+        document.querySelectorAll('.delete-social-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+
+                if (confirm('Are you sure you want to delete this social icon?')) {
+                    fetch(`/delete_social_icon/${id}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error deleting social icon');
+                        }
+                    });
+                }
+            });
+        });
+
+        document.querySelectorAll('.edit-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const link = this.getAttribute('data-link');
+                document.getElementById('editMenuItemId').value = id;
+                document.getElementById('editMenuItemName').value = name;
+                document.getElementById('editMenuItemLink').value = link;
+            });
+        });
+
+        function deleteMenuItem(id) {
+            fetch(`/delete_menu_item/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error deleting menu item');
+                }
+            });
+        }
+
+        document.querySelectorAll('.delete-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this menu item?')) {
+                    deleteMenuItem(id);
+                }
+            });
+        });
+
+        document.getElementById('hiringForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch("{% url 'apply_for_career' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Application submitted successfully!');
+                    $('#applyModal').modal('hide');
+                } else {
+                    alert('Error submitting application');
+                }
+            });
+        });
     </script>
-
+{% endblock %}
+});
+</script>
 </body>
 </html>

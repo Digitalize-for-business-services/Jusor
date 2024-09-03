@@ -1,15 +1,19 @@
 """
 Definition of views.
 """
-
+from .forms import JobApplicationForm
 from datetime import datetime
 import json
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
-from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from .models import AboutUs, Icon, Header, Service, TopBar, Slider, ClientImage, Client, Project, ProjectImage, Article
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from .models import AboutUs, Icon, Header, Service, TopBar, Slider, ClientImage, Client, Project, ProjectImage, Article, Testimonial, ExpertTeamMember, Career, JobApplication
+from django.shortcuts import redirect
 
 @csrf_exempt
 def add_slider(request):
@@ -44,6 +48,7 @@ def delete_slider(request, id):
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False})
 
+
 def homepage(request):
     logo = Icon.objects.filter(name="Jusor logo").first()
     headers = Header.objects.all()
@@ -56,7 +61,10 @@ def homepage(request):
     client_images = ClientImage.objects.filter(client=client)
     project = Project.objects.first()  # Assuming there's only one Project instance
     project_images = ProjectImage.objects.filter(project=project)
-    articles = Article.objects.all()  # Fetching all images related to the client
+    articles = Article.objects.all()
+    testimonials = Testimonial.objects.all()
+    team_members = ExpertTeamMember.objects.all()
+    careers = Career.objects.all()
 
     context = {
         'logo': logo,
@@ -71,6 +79,9 @@ def homepage(request):
         'project': project,
         'project_images': project_images,
         'articles': articles,
+        'testimonials': testimonials,
+        'team_members': team_members,
+        'careers': careers,
     }
     return render(request, 'app/index.html', context)
 
@@ -78,21 +89,50 @@ def blog(request):
     logo_icon = Icon.objects.filter(name='Jusor logo').first()
     return render(request, 'app/blog.html', {'logo_icon': logo_icon})
 
+from django.shortcuts import render
+
+@login_required
+def career_dashboard(request):
+    job_applications = JobApplication.objects.select_related('career').all()
+    context = {
+        'job_applications': job_applications,
+    }
+    return render(request, 'applied/html/careerdashboard.html', context)
+
 def senior_translation_specialist(request):
     return render(request, 'app/senior_translation_specialist.html')
 
 def contact(request):
-    """Renders the contact page."""
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/contact.html',
-        {
-            'title':'Contact',
-            'message':'Your contact page.',
-            'year':datetime.now().year,
-        }
-    )
+    """Renders the contact page and handles form submissions."""
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        # Construct the email content
+        email_subject = f"Contact Form Submission: {subject}"
+        email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+
+        # Send the email
+        send_mail(
+            email_subject,
+            email_message,
+            settings.DEFAULT_FROM_EMAIL,
+            ['specific-email@example.com'],  # Replace with the email address you want to send to
+        )
+
+        return render(request, 'app/contact.html', {
+            'title': 'Contact',
+            'message': 'Your message has been sent. Thank you!',
+            'year': datetime.now().year,
+        })
+
+    return render(request, 'app/contact.html', {
+        'title': 'Contact',
+        'message': 'Your contact page.',
+        'year': datetime.now().year,
+    })
 
 def about(request):
     """Renders the about page."""
@@ -206,3 +246,56 @@ def delete_menu_item(request, id):
 def article_detail(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     return render(request, 'app/article_detail.html', {'article': article})
+
+@csrf_exempt
+def apply_for_career(request, career_id):
+    if request.method == 'POST':
+        career = Career.objects.get(id=career_id)
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.career = career
+            application.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+def career_details(request, career_id):
+    career = get_object_or_404(Career, id=career_id)
+    return render(request, 'app/career_details.html', {'career': career})
+
+@csrf_exempt
+@login_required
+def update_application_status(request, application_id):
+    if request.method == 'POST':
+        application = get_object_or_404(JobApplication, id=application_id)
+        status = request.POST.get('status')
+        if status in dict(JobApplication.STATUS_CHOICES):
+            application.status = status
+            application.save()
+
+            # Send email if status is interview or rejected
+            if status == 'interview':
+                send_mail(
+                    'Interview Invitation',
+                    'Dear {},\n\nYou have been shortlisted for an interview. Please contact us to schedule your interview.\n\nBest regards,\nYour Company'.format(application.name),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [application.email],
+                )
+            elif status == 'rejected':
+                send_mail(
+                    'Application Status',
+                    'Dear {},\n\nWe regret to inform you that your application has been rejected. Thank you for your interest.\n\nBest regards,\nYour Company'.format(application.name),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [application.email],
+                )
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid status'})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
+    

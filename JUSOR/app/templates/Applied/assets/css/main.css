@@ -1,0 +1,14 @@
+/* Start Another Color */
+:root {
+    --dark-green: #0a7548;
+    --light-white: #FFFFFF;
+    --margin-icons: 10px;
+}
+.dark-green {
+    background-color: var(--dark-green) !important;
+    color: var(--light-white) !important;
+}
+.margin-icons {
+    margin-right: var(--margin-icons);
+}
+/* End Another Color */

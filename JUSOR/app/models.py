@@ -16,13 +16,14 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 def custom_upload_to(instance, filename):
     name, ext = os.path.splitext(filename)
     # Slugify the name (optional) to remove spaces and special characters
     name = slugify(name)
     # Return the new path
     return f'icons/{name}{ext}'
+
 class Icon(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -32,10 +33,9 @@ class Icon(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_link(self):
         """Return the absolute URL for the stored link."""
-        # If the link is relative (e.g., "/"), it should stay as is.
         if self.link:
             if self.link.startswith('/'):
                 return self.link
@@ -70,9 +70,9 @@ class Header(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_link(self):
         """Return the absolute URL for the stored link."""
-        # If the link is relative (e.g., "/"), it should stay as is.
         if self.link:
             if self.link.startswith('/'):
                 return self.link
@@ -89,6 +89,7 @@ class Slider(models.Model):
 
     def __str__(self):
         return self.title
+
     @staticmethod
     def get_all_sliders():
         return Slider.objects.all()
@@ -118,9 +119,10 @@ class ClientImage(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+
     def __str__(self):
         return self.title
-    
+
 class ProjectImage(models.Model):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='projects/')
@@ -147,7 +149,8 @@ class Testimonial(models.Model):
 class ExpertTeamMember(models.Model):
     name = models.CharField(max_length=100)
     job_title = models.CharField(max_length=100)
-    icons = models.ManyToManyField(Icon, related_name='team_icons')  # Multiple social links
+    icons = models.ManyToManyField(Icon, related_name='team_icons')
+    image = models.ImageField(upload_to='team_members/', blank=True, null=True)  # Multiple social links
 
     def __str__(self):
         return self.name
@@ -160,3 +163,33 @@ class AboutUs(models.Model):
 
     def __str__(self):
         return self.title
+
+class Career(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    details_link = models.URLField()
+    apply_link = models.URLField()
+    full_description = models.TextField()  # Add this field
+
+    def __str__(self):
+        return self.title
+
+class JobApplication(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('interview', 'Interview'),
+        ('rejected', 'Rejected'),
+    ]
+
+    career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    message = models.TextField()
+    cv = models.FileField(upload_to='cvs/')
+    applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return f"{self.name} - {self.career.title}"
