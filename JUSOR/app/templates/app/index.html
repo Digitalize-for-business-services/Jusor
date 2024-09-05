@@ -1,5 +1,5 @@
 {% extends "app/base.html" %}
-{% load static i18n %}
+{% load static %}
 
 {% block title %}Jusor - Professional Translation Services | Translation Company{% endblock %}
 
@@ -20,12 +20,6 @@
           <div class="item">
             <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
             <div class="slider-overlay">
-              <h2>{{ slider.title }}</h2>
-              <p>{{ slider.description }}</p>
-              {% if request.user.is_superuser %}
-                <i class="fa fa-edit edit-slider-icon" data-id="{{ slider.id }}" data-title="{{ slider.title }}" data-description="{{ slider.description }}" data-toggle="modal" data-target="#editSliderModal"></i>
-                <i class="fa fa-trash delete-slider-icon" data-id="{{ slider.id }}"></i>
-              {% endif %}
             </div>
           </div>
         {% endfor %}
@@ -75,8 +69,8 @@
       <section id="services">
         <div class="container">
           <div class="section-header">
-            <h2>{% trans "Our Professional Translation Services" %}</h2>
-            <p>{% trans "At Jusor, we provide a comprehensive range of professional translation services designed to meet the needs of businesses across various industries. Our expertise ensures that your content is accurate, engaging, and tailored to your audience." %}</p>
+            <h2>Our Professional Translation Services</h2>
+            <p>At Jusor, we provide a comprehensive range of professional translation services designed to meet the needs of businesses across various industries. Our expertise ensures that your content is accurate, engaging, and tailored to your audience.</p>
           </div>
       
           <div class="row">
@@ -99,7 +93,7 @@
       <section id="clients" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>{% trans "Our Valued Clients" %}</h2>
+            <h2>Our Valued Clients</h2>
             <p>{{ client.description }}</p>
           </div>
       
@@ -145,22 +139,29 @@
       ============================-->
       <section id="blog" class="wow fadeInUp">
         <div class="container">
-          <div class="section-header">
-            <h2>{% trans "Our Blog" %}</h2>
-            <p>{% trans "Stay informed with the latest updates, insights, and trends in the translation industry with Jusor's expert blog." %}  </p>
-          </div>
-          <div class="row">
-            {% for article in articles %}
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="blog-item">
-                  <h4>{{ article.title }}</h4>
-                  <div class="blog-content">
-                    {{ article.content|safe }}
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
+            <div class="section-header">
+                <h2>Our Blog</h2>
+                <p>Stay informed with the latest updates, insights, and trends in the translation industry with Jusor's expert blog.</p>
+            </div>
+            <div class="row">
+                {% for blog in recent_blogs %}
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="blog-item" style="max-height: none; height: auto;">
+                            {% if blog.image %}
+                                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid mb-3">
+                            {% endif %}
+                            <h4><a href="{% url 'blog_post' blog.id %}">{{ blog.title }}</a></h4>
+                            <div class="blog-content">
+                                {{ blog.description|truncatewords:10 }} <!-- Truncate description to 30 words -->
+                            </div>
+                            <a href="{% url 'blog_post' blog.id %}" class="read-more" style="color: white !important;">Read More</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'blog' %}" class="btn btn-primary">View All Blog Posts</a>
+            </div>
         </div>
       </section>
 
@@ -170,8 +171,8 @@
       <section id="testimonials" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>{% trans "Client Testimonials" %}</h2>
-            <p>{% trans "Discover what our clients say about their experiences with Jusor's professional translation services. We take pride in delivering accurate, reliable, and timely translations to meet all your needs." %}</p>
+            <h2>Client Testimonials</h2>
+            <p>Discover what our clients say about their experiences with Jusor's professional translation services. We take pride in delivering accurate, reliable, and timely translations to meet all your needs.</p>
           </div>
           <div class="owl-carousel testimonials-carousel">
             {% for testimonial in testimonials %}
@@ -195,8 +196,8 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-9 text-center text-lg-left">
-              <h3 class="cta-title">{% trans "Expand Your Global Reach with Professional Translation Services" %}</h3>
-              <p class="cta-text">{% trans "At Jusor, we bridge language gaps with expert translations that ensure your message resonates with international audiences. Our culturally accurate and precise translations help your business connect with clients worldwide. Ready to take your business to the next level?" %}</p>
+              <h3 class="cta-title">Expand Your Global Reach with Professional Translation Services</h3>
+              <p class="cta-text">At Jusor, we bridge language gaps with expert translations that ensure your message resonates with international audiences. Our culturally accurate and precise translations help your business connect with clients worldwide. Ready to take your business to the next level?</p>
             </div>
             <div class="col-lg-3 cta-btn-container text-center">
               <a class="cta-btn align-middle" href="#contact" aria-label="Contact Us to Get Started with Translation Services">Get Started</a>
@@ -211,8 +212,8 @@
       <section id="team" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>{% trans " Meet Our Expert Translation Team" %}</h2>
-            <p>{% trans "At Jusor, our team of skilled professionals is committed to providing top-quality translation services tailored to meet your business needs. Our experts ensure accurate and culturally relevant translations for a global audience." %}</p>
+            <h2>Meet Our Expert Translation Team</h2>
+            <p>At Jusor, our team of skilled professionals is committed to providing top-quality translation services tailored to meet your business needs. Our experts ensure accurate and culturally relevant translations for a global audience.</p>
           </div>
           <div class="row">
             {% for member in team_members %}
@@ -243,8 +244,8 @@
       <section id="career" class="wow fadeInUp">
         <div class="container">
             <div class="section-header">
-                <h2>{% trans "Career Opportunities at Jusor" %}</h2>
-                <p>{% trans "Join our expert team and help us create a world where communication knows no boundaries. Explore our current job openings and start your journey with Jusor." %}</p>
+                <h2>Career Opportunities at Jusor</h2>
+                <p>Join our expert team and help us create a world where communication knows no boundaries. Explore our current job openings and start your journey with Jusor.</p>
             </div>
             <div class="row">
                 {% for career in careers %}
@@ -266,7 +267,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="applyModalLabel">{% trans "Apply for a Position at Jusor" %}</h5>
+                    <h5 class="modal-title" id="applyModalLabel">Apply for a Position at Jusor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -274,26 +275,26 @@
                 <div class="modal-body">
                     <form id="hiringForm" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="applicantName">{% trans "Your Name" %}</label>
+                            <label for="applicantName">Your Name</label>
                             <input type="text" class="form-control" id="applicantName" name="name" placeholder="Enter your name" required>
                         </div>
                         <div class="form-group">
-                            <label for="applicantEmail">{% trans "Your Email" %}</label>
+                            <label for="applicantEmail">Your Email</label>
                             <input type="email" class="form-control" id="applicantEmail" name="email" placeholder="Enter your email" required>
                         </div>
                         <div class="form-group">
-                            <label for="applicantPhone">{% trans "Your Phone" %}</label>
+                            <label for="applicantPhone">Your Phone</label>
                             <input type="text" class="form-control" id="applicantPhone" name="phone" placeholder="Enter your phone number" required>
                         </div>
                         <div class="form-group">
-                            <label for="applicantMessage">{% trans "Why are you a good fit for this position?" %}</label>
+                            <label for="applicantMessage">Why are you a good fit for this position?</label>
                             <textarea class="form-control" id="applicantMessage" name="message" rows="3" placeholder="Briefly describe your qualifications" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="applicantCV">{% trans "Upload Your CV" %}</label>
+                            <label for="applicantCV">Upload Your CV</label>
                             <input type="file" class="form-control" id="applicantCV" name="cv" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">{% trans "Submit Application" %}</button>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
                     </form>
                 </div>
             </div>
@@ -306,8 +307,8 @@
       <section id="contact" class="wow fadeInUp">
         <div class="container">
           <div class="section-header">
-            <h2>{% trans "Contact Jusor - Your Professional Translation Partner" %}</h2>
-            <p>{% trans "Have questions or need expert translation services? Get in touch with Jusor today. Our team is ready to help you connect with the world through precise, reliable, and certified translation solutions. Let's bridge the language gap together!" %}</p>
+            <h2>Contact Jusor - Your Professional Translation Partner</h2>
+            <p>Have questions or need expert translation services? Get in touch with Jusor today. Our team is ready to help you connect with the world through precise, reliable, and certified translation solutions. Let's bridge the language gap together!</p>
           </div>
 
           <div class="row contact-info">
@@ -315,15 +316,15 @@
             <div class="col-md-4">
               <div class="contact-address">
                 <i class="ion-ios-location-outline"></i>
-                <h3>{% trans "Our Office Location" %}</h3>
-                <address>{% trans "Dar Al Wuheida Building - Office No. 319 - Abu Hail - Dubai - United Arab Emirates" %}</address>
+                <h3>Our Office Location</h3>
+                <address>Dar Al Wuheida Building - Office No. 319 - Abu Hail - Dubai - United Arab Emirates</address>
               </div>
             </div>
 
             <div class="col-md-4">
               <div class="contact-phone">
                 <i class="ion-ios-telephone-outline"></i>
-                <h3>{% trans "Call Us" %}</h3>
+                <h3>Call Us</h3>
                 <p><a href="tel:+971503244329">+971 50 324 4329</a></p>
               </div>
             </div>
@@ -331,7 +332,7 @@
             <div class="col-md-4">
               <div class="contact-email">
                 <i class="ion-ios-email-outline"></i>
-                <h3>{% trans "Email Us" %}</h3>
+                <h3>Email Us</h3>
                 <p><a href="mailto:info@jusortrans.com">info@jusortrans.com</a></p>
               </div>
             </div>
@@ -345,7 +346,7 @@
 
         <div class="container">
           <div class="form">
-            <div id="sendmessage">{% trans "Your message has been sent. Thank you!" %}</div>
+            <div id="sendmessage">Your message has been sent. Thank you!</div>
             <div id="errormessage"></div>
             <form action="{% url 'contact' %}" method="post" role="form" class="contactForm">
               {% csrf_token %}
@@ -367,7 +368,7 @@
                 <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write your message" placeholder="Message" required></textarea>
                 <div class="validation"></div>
               </div>
-              <div class="text-center"><button type="submit">{% trans "Send Message" %}</button></div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
             </form>
           </div>
         </div>

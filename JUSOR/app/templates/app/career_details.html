@@ -1,59 +1,75 @@
 {% extends "app/base.html" %}
 {% block title %}{{ career.title }} - Jusor{% endblock %}
 
-{% block content %}
-<section id="job-details" class="wow fadeInUp">
-    <div class="container">
-        <div class="section-header">
-            <h2>{{ career.title }}</h2>
-            <p>{{ career.description }}</p>
-        </div>
-        <div class="job-content">
-            {{ career.full_description|safe }}
-            <h3>How to Apply</h3>
-            <p>If you meet the qualifications and are passionate about delivering top-quality translation services, we would love to hear from you! Click the button below to apply.</p>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal">Apply Now</button>
-        </div>
-    </div>
-</section>
+{% block extra_css %}
+<style>
+  /* Ensure the footer is pushed down */
+  .content-wrapper {
+    min-height: calc(100vh - 200px); /* Adjust based on your header and footer height */
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    flex: 1;
+  }
+</style>
+{% endblock %}
 
-<!-- Apply Modal -->
-<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="applyModalLabel">Apply for {{ career.title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="hiringForm" enctype="multipart/form-data" method="post" action="{% url 'apply_for_career' career.id %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="applicantName">Your Name</label>
-                        <input type="text" class="form-control" id="applicantName" name="name" placeholder="Enter your name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantEmail">Your Email</label>
-                        <input type="email" class="form-control" id="applicantEmail" name="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantPhone">Your Phone</label>
-                        <input type="text" class="form-control" id="applicantPhone" name="phone" placeholder="Enter your phone number" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantMessage">Why are you a good fit for this position?</label>
-                        <textarea class="form-control" id="applicantMessage" name="message" rows="3" placeholder="Briefly describe your qualifications" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantCV">Upload Your CV</label>
-                        <input type="file" class="form-control" id="applicantCV" name="cv" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Application</button>
-                </form>
-            </div>
-        </div>
+{% block content %}
+<div class="content-wrapper">
+  <section id="job-details" class="wow fadeInUp content">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{ career.title }}</h2>
+        <p>{{ career.description }}</p>
+      </div>
+      <div class="job-content">
+        {{ career.full_description|safe }}
+        <h3>How to Apply</h3>
+        <p>If you meet the qualifications and are passionate about delivering top-quality translation services, we would love to hear from you! Click the button below to apply.</p>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal">Apply Now</button>
+      </div>
     </div>
+  </section>
+
+  <!-- Apply Modal -->
+  <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="applyModalLabel">Apply for {{ career.title }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="hiringForm" enctype="multipart/form-data" method="post" action="{% url 'apply_for_career' career.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="applicantName">Your Name</label>
+              <input type="text" class="form-control" id="applicantName" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label for="applicantEmail">Your Email</label>
+              <input type="email" class="form-control" id="applicantEmail" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+              <label for="applicantPhone">Your Phone</label>
+              <input type="text" class="form-control" id="applicantPhone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+              <label for="applicantMessage">Why are you a good fit for this position?</label>
+              <textarea class="form-control" id="applicantMessage" name="message" rows="3" placeholder="Briefly describe your qualifications" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="applicantCV">Upload Your CV</label>
+              <input type="file" class="form-control" id="applicantCV" name="cv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Application</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

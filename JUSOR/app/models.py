@@ -9,14 +9,6 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
 
-class Article(models.Model):
-    title = models.CharField(max_length=200)
-    content = RichTextField('Content')  # Adjust config_name as needed
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
 def custom_upload_to(instance, filename):
     name, ext = os.path.splitext(filename)
     # Slugify the name (optional) to remove spaces and special characters
@@ -134,7 +126,10 @@ class ProjectImage(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    content = RichTextField('Content')  # Add this field for full blog content
     image = models.ImageField(upload_to='blogs/')
+    published_date = models.DateField(auto_now_add=True)
+    author = models.CharField(max_length=100, default='John Doe')  # Add author field
 
     def __str__(self):
         return self.title
@@ -167,9 +162,9 @@ class AboutUs(models.Model):
 class Career(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    details_link = models.URLField()
-    apply_link = models.URLField()
-    full_description = models.TextField()  # Add this field
+    details_link = models.CharField(max_length=200, blank=True, null=True)  # Use CharField for relative URLs
+    apply_link = models.CharField(max_length=200, blank=True, null=True)
+    full_description = RichTextField('Content')
 
     def __str__(self):
         return self.title

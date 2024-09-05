@@ -664,6 +664,71 @@ h6 {
 }
 /* End Slider */
 
+/* ... existing CSS ... */
+
+/* Floating Contact Us Button */
+#floating-contact {
+    position: fixed;
+    top: 130px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+    #floating-contact .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    #floating-contact .avatar {
+        max-width: 100%;
+        width: 180px;
+        border: 1px solid #eee;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    #floating-contact .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #floating-contact .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #floating-contact {
+        flex-direction: column;
+    }
+
+        #floating-contact .avatar {
+            margin-bottom: 10px;
+        }
+}
+
+/* ... existing CSS ... */
+
+
+
 /*--------------------------------------------------------------
 # Top Bar
 --------------------------------------------------------------*/
@@ -1441,6 +1506,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   opacity: 0; /* Start with items hidden */
   transform: translateY(20px); /* Slightly move them down */
   transition: all 0.6s ease-out;
+  background: #fff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+  max-height: none;
+  height: auto;
 }
 
 #blog .blog-item img {
@@ -1564,7 +1635,6 @@ body.mobile-nav-active #mobile-nav-toggle {
       padding: 15px;
   }
 }
-
 
 /* Testimonials Section
 --------------------------------*/
@@ -1706,11 +1776,50 @@ li:hover .delete-icon {
   transition: opacity 0.3s ease;
 }
 
+.blog-item:hover {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.blog-item h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.blog-item h4 a {
+  color: #333;
+  transition: 0.3s;
+}
+
+.blog-item h4 a:hover {
+  color: #007bff;
+}
+
+.blog-item .read-more {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 6px 20px;
+  margin-top: 10px;
+  transition: 0.3s;
+  border-radius: 4px;
+}
+
+.blog-item .read-more:hover {
+  background: #0056b3;
+}
 .item {
   position: relative;
   overflow: hidden;
 }
-
+.card-description {
+  max-height: 100px; /* Adjust the height as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  line-clamp: 1; /* Standard property for compatibility */
+}
 .item:hover .slider-overlay {
   opacity: 1;
 }
@@ -1743,6 +1852,70 @@ li:hover .delete-icon {
   background: #0a447c;
   border: 3px solid #0a447c;
 }
+
+/* ... existing CSS ... */
+
+/* Floating Contact Us Button */
+#floating-contact {
+  position: fixed;
+  top: 130px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#floating-contact .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#floating-contact .avatar {
+  max-width: 100%;
+  width: 180px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#floating-contact .btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#floating-contact .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  #floating-contact {
+    flex-direction: column;
+  }
+
+  #floating-contact .avatar {
+    margin-bottom: 10px;
+  }
+}
+
+/* ... existing CSS ... */
+
 
 /* Our Team Section
 --------------------------------*/

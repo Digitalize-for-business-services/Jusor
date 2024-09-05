@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+
+{% block title %}{{ blog.title }} | Jusor Translation{% endblock %}
+
+{% block content %}
+<section id="blog-post" class="wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h2>{{ blog.title }}</h2>
+            <p>Published on: {{ blog.published_date }} | Author: {{ blog.author }}</p>
+        </div>
+        <div class="content">
+            <div class="blog-content">
+                {{ blog.content|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

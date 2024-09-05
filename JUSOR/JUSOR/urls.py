@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.conf import settings
 from django.conf.urls.static import static
-from app.views import delete_menu_item, career_dashboard
+from app.views import delete_menu_item, career_dashboard, blog_post
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,8 +46,8 @@ urlpatterns = [
     path('apply/<int:career_id>/', views.apply_for_career, name='apply_for_career'),
     path('update_application_status/<int:application_id>/', views.update_application_status, name='update_application_status'),
     path('career_dashboard/', career_dashboard, name='career_dashboard'),
-    path('article/<int:article_id>/', views.article_detail, name='article_detail'),
     path('delete_menu_item/<int:id>/', delete_menu_item, name='delete_menu_item'),
+    path('blog/<int:blog_id>/', views.blog_post, name='blog_post'),
 ]
 
 if settings.DEBUG:

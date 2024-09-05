@@ -4,7 +4,6 @@ Definition of views.
 from .forms import JobApplicationForm
 from datetime import datetime
 import json
-from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
@@ -12,8 +11,9 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .models import AboutUs, Icon, Header, Service, TopBar, Slider, ClientImage, Client, Project, ProjectImage, Article, Testimonial, ExpertTeamMember, Career, JobApplication
-from django.shortcuts import redirect
+from .models import AboutUs, Icon, Header, Service, TopBar, Slider, ClientImage, Client, Project, ProjectImage, Testimonial, ExpertTeamMember, Career, JobApplication, Blog
+from django.core.paginator import Paginator
+
 
 @csrf_exempt
 def add_slider(request):
@@ -50,10 +50,7 @@ def delete_slider(request, id):
 
 
 def homepage(request):
-    logo = Icon.objects.filter(name="Jusor logo").first()
-    headers = Header.objects.all()
     icons = Icon.objects.all()
-    social_media_icons = TopBar.objects.all()
     sliders = Slider.get_all_sliders()
     about_us = AboutUs.objects.first()  # Fetching the first AboutUs entry
     services = Service.objects.all()  # Fetching all services
@@ -61,16 +58,12 @@ def homepage(request):
     client_images = ClientImage.objects.filter(client=client)
     project = Project.objects.first()  # Assuming there's only one Project instance
     project_images = ProjectImage.objects.filter(project=project)
-    articles = Article.objects.all()
     testimonials = Testimonial.objects.all()
     team_members = ExpertTeamMember.objects.all()
     careers = Career.objects.all()
-
+    recent_blogs = Blog.objects.order_by('-published_date')[:3]
     context = {
-        'logo': logo,
-        'headers': headers,
         'icons': icons,
-        'social_media_icons': social_media_icons,
         'sliders': sliders,
         'about_us': about_us,  # Adding about_us to the context
         'services': services,  # Adding services to the context
@@ -78,18 +71,19 @@ def homepage(request):
         'client_images': client_images,
         'project': project,
         'project_images': project_images,
-        'articles': articles,
         'testimonials': testimonials,
         'team_members': team_members,
         'careers': careers,
+        'recent_blogs': recent_blogs,
     }
     return render(request, 'app/index.html', context)
 
 def blog(request):
-    logo_icon = Icon.objects.filter(name='Jusor logo').first()
-    return render(request, 'app/blog.html', {'logo_icon': logo_icon})
-
-from django.shortcuts import render
+    blogs_list = Blog.objects.all().order_by('-published_date')
+    paginator = Paginator(blogs_list, 6)  # Show 6 blogs per page
+    page_number = request.GET.get('page')
+    blogs = paginator.get_page(page_number)
+    return render(request, 'app/blog.html', {'blogs': blogs})
 
 @login_required
 def career_dashboard(request):
@@ -243,9 +237,6 @@ def delete_menu_item(request, id):
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False})
 
-def article_detail(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
-    return render(request, 'app/article_detail.html', {'article': article})
 
 @csrf_exempt
 def apply_for_career(request, career_id):
@@ -298,4 +289,8 @@ def update_application_status(request, application_id):
 
 
 
-    
+def blog_post(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    return render(request, 'app/blog_post.html', {'blog': blog})
+
+

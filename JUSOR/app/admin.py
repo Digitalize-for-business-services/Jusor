@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Icon, TopBar, Header, Slider, Service, Client, Project, ProjectImage, Blog, Testimonial, ExpertTeamMember, AboutUs, ClientImage, Article, Career, JobApplication
+from .models import Icon, TopBar, Header, Slider, Service, Client, Project, ProjectImage, Blog, Testimonial, ExpertTeamMember, AboutUs, ClientImage, Career, JobApplication
 
 admin.site.register(Slider)
 admin.site.register(Service)
@@ -24,12 +24,6 @@ class TopBarAdmin(admin.ModelAdmin):
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
     list_display = ('name', 'link')
-
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at')  # The main fields to display
-    list_display_links = ('title',)  # Link to edit the article by clicking the title
-    search_fields = ('title', 'content')
 
 @admin.register(Career)
 class CareerAdmin(admin.ModelAdmin):

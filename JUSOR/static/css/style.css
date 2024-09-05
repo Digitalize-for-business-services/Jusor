@@ -664,6 +664,71 @@ h6 {
 }
 /* End Slider */
 
+
+/* ... existing CSS ... */
+
+/* Floating Contact Us Button */
+#floating-contact {
+    position: fixed;
+    top: 130px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+    #floating-contact .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    #floating-contact .avatar {
+        max-width: 100%;
+        width: 180px;
+        border: 1px solid #eee;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    #floating-contact .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #floating-contact .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #floating-contact {
+        flex-direction: column;
+    }
+
+        #floating-contact .avatar {
+            margin-bottom: 10px;
+        }
+}
+
+/* ... existing CSS ... */
+
+
 /*--------------------------------------------------------------
 # Top Bar
 --------------------------------------------------------------*/

@@ -1,9 +1,9 @@
-{% load static i18n %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}{% trans "Jusor - Professional Translation Services" %}{% endblock %}</title>
+  <title>{% block title %}Jusor - Professional Translation Services{% endblock %}</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -30,25 +30,74 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/slider.css' %}">
   {% block extra_css %}{% endblock %}
-
   <style>
-    /* Ensure the body and html take full height */
-    html, body {
-      height: 100%;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    /* Wrapper to push footer to the bottom */
-    .content-wrapper {
-      flex: 1;
-    }
-    /* Footer styling */
-    footer {
-      background: #f8f9fa;
-      padding: 20px 0;
-      text-align: center;
-    }
+  footer {
+    background: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+  }
+  /* ... existing CSS ... */
+
+/* Floating Contact Us Button */
+#floating-contact {
+  position: fixed;
+  top: 130px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#floating-contact .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#floating-contact .avatar {
+  max-width: 100%;
+  width: 180px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#floating-contact .btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#floating-contact .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  #floating-contact {
+    flex-direction: column;
+  }
+
+  #floating-contact .avatar {
+    margin-bottom: 10px;
+  }
+}
+
+/* ... existing CSS ... */
   </style>
 </head>
 
@@ -57,19 +106,46 @@
   <!-- Whatsapp -->
   <a href="https://api.whatsapp.com/send?phone=971503244329&text=Hello Jusor, I would like to inquire about your services." class="whatsapp_float" target="_blank">
     <img src="https://img.icons8.com/color/48/000000/whatsapp.png" alt="WhatsApp">
-    <span>{% trans "Contact Us" %}</span>
+    <span>Contact Us</span>
   </a>
 
-  <!-- Alert -->
-  <div id="whatsapp-alert-form" class="alert">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    <p>{% trans "Leave your phone number, and we'll contact you on WhatsApp!" %}</p>
-    <form id="contact-form">
-        <input type="text" id="phone" name="phone" placeholder="Your Phone Number" required>
-        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Submit</button>
-    </form>
-  </div>
+    <!-- ... existing code ... -->
+
+    <!-- Floating Contact Us Button -->
+    <div id="floating-contact" style="background: none; border: medium; box-shadow: none;">
+      <button class="close-btn" onclick="closeFloatingContact()">&times;</button>
+      <img src="{% static 'img/avatar.png' %}" alt="Call Center Avatar" class="avatar" style="border: none;">
+      <button id="contact-us-btn" class="btn btn-primary">Contact Us</button>
+    </div>
+
+    <!-- Contact Us Modal -->
+    <div id="contactModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Contact Us</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="modal-contact-form">
+              <div class="form-group">
+                <label for="modal-phone">Your Phone Number</label>
+                <input type="text" class="form-control" id="modal-phone" name="phone" placeholder="Your Phone Number" required>
+              </div>
+              <div class="form-group">
+                <label for="modal-message">Your Message</label>
+                <textarea class="form-control" id="modal-message" name="message" placeholder="Your Message" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ... existing code ... -->
 
   <!--==========================
     Top Bar
@@ -110,7 +186,7 @@
       <nav id="nav-menu-container">
         <ul class="nav-menu">
           {% for header in headers %}
-            <li>
+            <li style="padding: 0 !important;">
               <a href="{{ header.get_link }}">{{ header.name }}</a>
             </li>
           {% endfor %}
@@ -119,9 +195,7 @@
     </div>
   </header><!-- #header -->
 
-  <div class="content-wrapper">
-    {% block content %}{% endblock %}
-  </div>
+  {% block content %}{% endblock %}
 
   <!--==========================
     Footer
@@ -169,6 +243,31 @@
         e.preventDefault();
         this.submit();
     });
+  </script>
+  <script>
+    // ... existing JavaScript ...
+    
+    // Modal functionality using Bootstrap
+    document.getElementById('contact-us-btn').onclick = function() {
+      $('#contactModal').modal('show');
+    }
+    
+    // ... existing JavaScript ...
+  </script>
+  <script>
+    // ... existing JavaScript ...
+    
+    // Function to close the floating contact div
+    function closeFloatingContact() {
+      document.getElementById('floating-contact').style.display = 'none';
+    }
+    
+    // Modal functionality using Bootstrap
+    document.getElementById('contact-us-btn').onclick = function() {
+      $('#contactModal').modal('show');
+    }
+    
+    // ... existing JavaScript ...
   </script>
 </body>
 </html>
